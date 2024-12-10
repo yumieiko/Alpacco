@@ -2,12 +2,15 @@
 #include <fstream>
 #include <iostream>
 #include <json/json.h>
+#include <json/reader.h>
+#include <json/value.h>
+#include <json/writer.h>
 #include <vector>
 #include <spdlog/spdlog.h>
 
 std::vector<std::string> configParser::parseDependencies(const std::string &filename) {
-    spdlog::info("parsing config");
-    std::ifstream ifs("pacco.config.json", std::ifstream::binary);
+    spdlog::debug("parsing config");
+    std::ifstream ifs("alpacco.config.json", std::ifstream::binary);
     Json::Reader rdr;
     Json::Value root;
     std::vector<std::string> dep_list;
@@ -17,6 +20,7 @@ std::vector<std::string> configParser::parseDependencies(const std::string &file
         for (const auto &dep : dependencies) {
             dep_list.push_back(dep.asString());
         }
+        ifs.close();
     } else { spdlog::error("error while opening config file!" );}
     return dep_list;
 }
@@ -27,7 +31,28 @@ int configParser::returnFormatedDeps(const std::string &filename)
     spdlog::info("Formatting Dependencies");
     std::vector<std::string> deps = this->parseDependencies(filename);
     for (const auto& dep : deps) {
-        std::cout << "[DEP] " << dep << " Founded!" << std::endl;
+        spdlog::debug("[DEPENDENCY] " + dep + " Founded!");
     }
     return 0;
+}
+
+void configParser::addDependency(const std::string filename, const std::string dependency_name)
+{
+    std::ifstream filer(filename);
+    Json::Reader rdr;
+    Json::Value root;
+    if (filer.is_open()){
+        spdlog::info("Writing dependency to file");
+        spdlog::debug("Config Parsed succeful");
+        rdr.parse(filer, root);
+        Json::Value dependencies = root["dependencies"];
+        Json::Value addedDep(dependency_name);
+        dependencies.append(addedDep);
+        root["dependencies"] = dependencies;
+        std::ofstream filew(filename);
+        filew.clear();
+        filew << root;
+        filew.close();
+        spdlog::debug("Config Writed succeful");
+    } else { spdlog::error("config openning error!"); }
 }
