@@ -25,12 +25,16 @@ int main(int argc, char **argv)
     // install all packages
     args::Command install_command(parser, "install", "Install all dependencies from config");
 
+    // Start
+    args::Command start_command(parser, "start", "Start project with your command");
+
     try
     {
         parser.ParseCLI(argc, argv);
         CommandCallbacks *commands_callbacks;
         if (init){ commands_callbacks->initCommand(projectname, entry_point,project_version); }
         if (add_command) { commands_callbacks->addPkgCommand(dependname); }
+        if (start_command) { commands_callbacks->startCommand(); }
         std::cout << std::endl;
     }
     catch (args::Help)

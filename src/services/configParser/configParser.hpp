@@ -6,4 +6,5 @@ private:
 public:
     int returnFormatedDeps(const std::string& filename);
     void addDependency(const std::string filename, const std::string dependency_name);
+    std::string getStartCommand(const std::string& filename);
 };

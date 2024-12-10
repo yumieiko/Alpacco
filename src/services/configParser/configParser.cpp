@@ -4,6 +4,7 @@
 #include <json/reader.h>
 #include <json/value.h>
 #include <json/writer.h>
+#include <string>
 #include <vector>
 #include <spdlog/spdlog.h>
 
@@ -61,4 +62,19 @@ void configParser::addDependency(const std::string filename, const std::string d
         filew.close();
         spdlog::debug("Config Writed succeful");
     } else { spdlog::error("config openning error!"); }
+}
+
+std::string configParser::getStartCommand(const std::string& filename)
+{
+    spdlog::debug("parsing config");
+    std::ifstream ifs("alpacco.config.json", std::ifstream::binary);
+    Json::Reader rdr;
+    Json::Value root;
+    std::string etp;
+    if (ifs.is_open()) {
+        rdr.parse(ifs, root);
+        Json::Value entry_point = root["entry_point"];
+        etp = entry_point.asString();
+    } else { spdlog::error("error while opening config file!" );}
+    return etp;
 }

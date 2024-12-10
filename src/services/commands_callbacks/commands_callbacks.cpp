@@ -1,7 +1,11 @@
 #include "commands_callbacks.hpp"
+#include <fmt/base.h>
 #include <spdlog/spdlog.h>
 #include "../initProject/init.hpp"
 #include "../configParser/configParser.hpp"
+#include <fmt/core.h>
+#include <fmt/color.h>
+#include <string>
 
 void CommandCallbacks::initCommand(args::Positional<std::string> projectname, 
                                     args::Positional<std::string> entry_point, 
@@ -36,4 +40,16 @@ void CommandCallbacks::addPkgCommand(args::Positional<std::string> dependname)
     }
     configParser *cfgparser;
     cfgparser->addDependency("alpacco.config.json", args::get(dependname));
+}
+
+void CommandCallbacks::startCommand()
+{
+    configParser *cfgparser;
+    try {
+        spdlog::debug("Started project!");
+        std::string _cmd = cfgparser->getStartCommand("alpacco.config.json");
+        fmt::print(fg(fmt::color::lawn_green), "  $ ");
+        fmt::print(fg(fmt::color::spring_green), "{}", _cmd);
+        system(_cmd.c_str()); //TODO Needed to be add source venv before start!!!
+    } catch (...) { spdlog::error("error is occuled while start!"); }
 }
