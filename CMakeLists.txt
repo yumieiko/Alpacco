@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11)
-project(pacco CXX)
+project(alalpacco CXX)
 
 if(NOT TARGET spdlog)
     find_package(spdlog REQUIRED)
@@ -14,6 +14,6 @@ set(serviceslib
     "src/services/configParser/configParser.cpp"
     )
 
-add_executable(pacco src/main.cpp ${serviceslib})
+add_executable(alpacco src/main.cpp ${serviceslib})
 
-target_link_libraries(pacco PRIVATE spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> ${JSONCPP_LIBRARIES})
+target_link_libraries(alpacco PRIVATE spdlog::spdlog $<$<BOOL:${MINGW}>:ws2_32> ${JSONCPP_LIBRARIES})
