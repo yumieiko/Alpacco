@@ -4,7 +4,6 @@
 #include <fstream>
 #include <spdlog/spdlog.h>
 #include <string>
-#include <iostream>
 #include <json/json.h>
 
 using namespace Json;
@@ -21,19 +20,25 @@ void InitProject::SetupVenv(const char* venvname)
 
 void InitProject::CreateConfig(const char* projectname, const char* entry_point_name, const char* version)
 {
-
     Json::Value root;
+
     spdlog::info("Creating config file");
+
     try {
         spdlog::debug("Formatting pretty-json");
+
         root["projectname"] = projectname;
         root["entry_point"] = entry_point_name;
         root["version"] = version;
+
         Json::Value dependencies(Json::arrayValue);
         root["dependencies"] = dependencies;
+
         Json::StreamWriterBuilder builder;
         builder["indentation"] = "  ";
+
         Json::StreamWriterBuilder writer(builder);
+        
         spdlog::debug("Writing Config to alpacco.config.json");
         std::ofstream config("alpacco.config.json");
         config << Json::writeString(writer, root);

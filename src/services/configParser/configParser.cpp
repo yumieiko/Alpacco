@@ -1,6 +1,5 @@
 #include "configParser.hpp"
 #include <fstream>
-#include <iostream>
 #include <json/json.h>
 #include <json/reader.h>
 #include <json/value.h>
@@ -44,14 +43,21 @@ void configParser::addDependency(const std::string filename, const std::string d
     if (filer.is_open()){
         spdlog::info("Writing dependency to file");
         spdlog::debug("Config Parsed succeful");
+
         rdr.parse(filer, root);
         Json::Value dependencies = root["dependencies"];
+
         Json::Value addedDep(dependency_name);
         dependencies.append(addedDep);
         root["dependencies"] = dependencies;
+
+        Json::StreamWriterBuilder builder;
+        builder["indentation"] = "  ";
+        Json::StreamWriterBuilder writer(builder);
+
         std::ofstream filew(filename);
         filew.clear();
-        filew << root;
+        filew << Json::writeString(writer, root);
         filew.close();
         spdlog::debug("Config Writed succeful");
     } else { spdlog::error("config openning error!"); }

@@ -12,7 +12,7 @@ void CommandCallbacks::initCommand(args::Positional<std::string> projectname,
             if (!projectname) {
                 std::cout << "Enter Project Name (e.g alpacco): ";
                 std::getline(std::cin, _projectname);
-            } else { spdlog::debug("entrypoint provided as flag"); _projectname = args::get(projectname); }
+            } else { spdlog::debug("project name provided as flag"); _projectname = args::get(projectname); }
 
             if (!entry_point) {
                 std::cout << "Enter Entry Point file (e.g main.py, empty if edit in config): ";
@@ -20,9 +20,9 @@ void CommandCallbacks::initCommand(args::Positional<std::string> projectname,
             } else { spdlog::debug("entrypoint provided as flag"); _entry_point = args::get(entry_point); }
 
             if (!project_version) {
-                std::cout << "Enter Entry Point file (e.g 1.0.0): ";
+                std::cout << "Enter Project Version file (e.g 1.0.0): ";
                 std::getline(std::cin, _projectversion);
-            } else { spdlog::debug("entrypoint provided as flag"); _projectversion = args::get(project_version); }
+            } else { spdlog::debug("project version provided as flag"); _projectversion = args::get(project_version); }
 
             InitProject *project;
             project->SetupVenv("alpaccoenv");

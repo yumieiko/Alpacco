@@ -12,6 +12,7 @@ link_libraries(${JSONCPP_LIBRARIES})
 set(serviceslib 
     "src/services/initProject/init.cpp"
     "src/services/configParser/configParser.cpp"
+    "src/services/commands_callbacks/commands_callbacks.cpp"
     )
 
 add_executable(alpacco src/main.cpp ${serviceslib})
