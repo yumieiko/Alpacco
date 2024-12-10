@@ -4,10 +4,9 @@
 #include <json/reader.h>
 #include <ostream>
 #include <spdlog/spdlog.h>
+#include <string>
 #include "libs/args/args.hxx"
-#include "services/initProject/init.hpp"
-#include "services/configParser/configParser.hpp"
-
+#include "services/commands_callbacks/commands_callbacks.hpp"
 
 int main(int argc, char **argv) 
 {
@@ -15,33 +14,23 @@ int main(int argc, char **argv)
     args::ArgumentParser parser("alpacco - lightware python project manager");
     // Init
     args::Command init(parser, "init", "Init project");
-    args::Positional<std::string> projectname(init, "projectname", "Name of the project");
+    args::Positional<std::string> projectname(init, "project name", "Name of the project");
+    args::Positional<std::string> entry_point(init, "entrypoint", "entry point filename");
+    args::Positional<std::string> project_version(init, "project version", "project version");
     
     // add package
     args::Command add_command(parser, "add", "Add dependency");
     args::Positional<std::string> dependname(add_command, "dependency", "The name of the dependency");
 
+    // install all packages
+    args::Command install_command(parser, "install", "Install all dependencies from config");
+
     try
     {
         parser.ParseCLI(argc, argv);
-        if (init)
-        {
-            if (!projectname) {
-                spdlog::error("project name not provided!");
-                exit(1);
-            }
-            
-            InitProject *project;
-            project->SetupVenv("alpaccoenv");
-            project->CreateConfig(args::get(projectname).c_str());
-        }
-        if (add_command) {
-            if (!dependname) {
-                spdlog::error("Dependency error!");
-            }
-            configParser *cfgparser;
-            cfgparser->addDependency("alpacco.config.json", args::get(dependname));
-        }
+        CommandCallbacks *commands_callbacks;
+        if (init){ commands_callbacks->initCommand(projectname, entry_point,project_version); }
+        if (add_command) { commands_callbacks->addPkgCommand(dependname); }
         std::cout << std::endl;
     }
     catch (args::Help)
