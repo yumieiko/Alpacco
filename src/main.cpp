@@ -11,14 +11,16 @@
 
 int main(int argc, char **argv) 
 {
-    args::ArgumentParser parser("Pacco - lightware python project manager");
+    spdlog::set_level(spdlog::level::debug);
+    args::ArgumentParser parser("alpacco - lightware python project manager");
     // Init
     args::Command init(parser, "init", "Init project");
-    args::Group init_args(init, "arguments", args::Group::Validators::DontCare, args::Options::Global);
-    args::ValueFlag<std::string> projectname(init_args, "projectname", "", {"n"});
+    args::Positional<std::string> projectname(init, "projectname", "Name of the project");
     
-    // Install
-    args::Command install(parser, "install", "install all dependencies");
+    // add package
+    args::Command add_command(parser, "add", "Add dependency");
+    args::Positional<std::string> dependname(add_command, "dependency", "The name of the dependency");
+
     try
     {
         parser.ParseCLI(argc, argv);
@@ -30,12 +32,15 @@ int main(int argc, char **argv)
             }
             
             InitProject *project;
-            project->SetupVenv("paccoenv");
-            project->CreateConfig(projectname->c_str());
+            project->SetupVenv("alpaccoenv");
+            project->CreateConfig(args::get(projectname).c_str());
         }
-        if (install) {
-            configParser *configParser;
-            configParser->returnFormatedDeps("pacco.config.json");
+        if (add_command) {
+            if (!dependname) {
+                spdlog::error("Dependency error!");
+            }
+            configParser *cfgparser;
+            cfgparser->addDependency("alpacco.config.json", args::get(dependname));
         }
         std::cout << std::endl;
     }
