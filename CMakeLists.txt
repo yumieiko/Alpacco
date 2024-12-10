@@ -11,6 +11,7 @@ link_libraries(${JSONCPP_LIBRARIES})
 
 set(serviceslib 
     "src/services/initProject/init.cpp"
+    "src/services/configParser/configParser.cpp"
     )
 
 add_executable(pacco src/main.cpp ${serviceslib})
