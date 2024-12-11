@@ -28,6 +28,9 @@ int main(int argc, char **argv)
     // Start
     args::Command start_command(parser, "start", "Start project with your command");
 
+    // Dev
+    args::Command dev_command(parser, "dev", "Start developer session");
+
     try
     {
         parser.ParseCLI(argc, argv);
