@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 #include <json/reader.h>
 #include <ostream>
@@ -7,9 +8,13 @@
 #include <string>
 #include "libs/args/args.hxx"
 #include "services/commands_callbacks/commands_callbacks.hpp"
+#include "services/hotreload/hotreload.hpp"
 
 int main(int argc, char **argv) 
 {
+    const std::chrono::milliseconds interval(40);
+    HotReload *hrl;
+    hrl->reloadEvent(std::filesystem::current_path().c_str(), interval);
     spdlog::set_level(spdlog::level::debug);
     args::ArgumentParser parser("alpacco - lightware python project manager");
     // Init
