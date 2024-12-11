@@ -7,4 +7,5 @@ public:
     int returnFormatedDeps(const std::string& filename);
     void addDependency(const std::string filename, const std::string dependency_name);
     std::string getStartCommand(const std::string& filename);
+    std::vector<std::string> getDepends(const std::string& filename) { return parseDependencies(filename); };
 };

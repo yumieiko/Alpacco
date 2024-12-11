@@ -9,12 +9,13 @@
 #include "libs/args/args.hxx"
 #include "services/commands_callbacks/commands_callbacks.hpp"
 #include "services/hotreload/hotreload.hpp"
-
+#include "services/pipInterlayer/pipInterlayer.hpp"
+#include "services/configParser/configParser.hpp"
 int main(int argc, char **argv) 
 {
-    const std::chrono::milliseconds interval(40);
-    HotReload *hrl;
-    hrl->reloadEvent(std::filesystem::current_path().c_str(), interval);
+    // const std::chrono::milliseconds interval(40);
+    // HotReload *hrl;
+    // hrl->reloadEvent(std::filesystem::current_path().c_str(), interval);
     spdlog::set_level(spdlog::level::debug);
     args::ArgumentParser parser("alpacco - lightware python project manager");
     // Init
@@ -43,6 +44,7 @@ int main(int argc, char **argv)
         if (init){ commands_callbacks->initCommand(projectname, entry_point,project_version); }
         if (add_command) { commands_callbacks->addPkgCommand(dependname); }
         if (start_command) { commands_callbacks->startCommand(); }
+        if (install_command) { commands_callbacks->installDeps(); }
         std::cout << std::endl;
     }
     catch (args::Help)

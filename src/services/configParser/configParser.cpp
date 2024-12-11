@@ -1,5 +1,6 @@
 #include "configParser.hpp"
 #include <fstream>
+#include <iostream>
 #include <json/json.h>
 #include <json/reader.h>
 #include <json/value.h>
@@ -10,7 +11,7 @@
 
 std::vector<std::string> configParser::parseDependencies(const std::string &filename) {
     spdlog::debug("parsing config");
-    std::ifstream ifs("alpacco.config.json", std::ifstream::binary);
+    std::ifstream ifs(filename, std::ifstream::binary);
     Json::Reader rdr;
     Json::Value root;
     std::vector<std::string> dep_list;
@@ -19,6 +20,7 @@ std::vector<std::string> configParser::parseDependencies(const std::string &file
         Json::Value dependencies = root["dependencies"];
         for (const auto &dep : dependencies) {
             dep_list.push_back(dep.asString());
+            std::cout << dep.asString() << std::endl;
         }
         ifs.close();
     } else { spdlog::error("error while opening config file!" );}

@@ -3,9 +3,11 @@
 #include <spdlog/spdlog.h>
 #include "../initProject/init.hpp"
 #include "../configParser/configParser.hpp"
+#include "../pipInterlayer/pipInterlayer.hpp"
 #include <fmt/core.h>
 #include <fmt/color.h>
 #include <string>
+#include "../utils.hpp"
 
 void CommandCallbacks::initCommand(args::Positional<std::string> projectname, 
                                     args::Positional<std::string> entry_point, 
@@ -49,7 +51,14 @@ void CommandCallbacks::startCommand()
         spdlog::debug("Started project!");
         std::string _cmd = cfgparser->getStartCommand("alpacco.config.json");
         fmt::print(fg(fmt::color::lawn_green), "  $ ");
-        fmt::print(fg(fmt::color::spring_green), "{}", _cmd);
-        system(_cmd.c_str()); //TODO Needed to be add source venv before start!!!
+        fmt::print(fg(fmt::color::spring_green), "{}\n", _cmd);
+        utils::sysvenv(_cmd.c_str()); //TODO Needed to be add source venv before start!!!
     } catch (...) { spdlog::error("error is occuled while start!"); }
+}
+
+void CommandCallbacks::installDeps() {
+    spdlog::debug("Callback install deps called");
+    PipInterlayer *pipil;
+    configParser *cfg;
+    pipil->installDependencies(cfg->getDepends("alpacco.config.json"));
 }

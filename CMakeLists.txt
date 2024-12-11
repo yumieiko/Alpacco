@@ -16,6 +16,7 @@ set(serviceslib
     "src/services/configParser/configParser.cpp"
     "src/services/commands_callbacks/commands_callbacks.cpp"
     "src/services/hotreload/hotreload.cpp"
+    "src/services/pipInterlayer/pipInterlayer.cpp"
     )
 
 add_executable(alpacco src/main.cpp ${serviceslib})

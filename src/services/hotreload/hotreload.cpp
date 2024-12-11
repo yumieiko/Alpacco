@@ -21,7 +21,6 @@ void HotReload::reloadEvent(const fs::path& path_to_watch, std::chrono::millisec
 
         std::set<std::string> current_directories;
 
-
         for (fs::recursive_directory_iterator it(path_to_watch), end; it != end; ++it) {
             if (fs::is_regular_file(it->path())) {
                 auto current_file_last_write_time = fs::last_write_time(it->path());
