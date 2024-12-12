@@ -30,6 +30,8 @@ int main(int argc, char **argv)
 
     // install all packages
     args::Command install_command(parser, "install", "Install all dependencies from config");
+    // update all packages
+    args::Command update_command(parser, "update", "update all dependencies from config");
 
     // Start
     args::Command start_command(parser, "start", "Start project with your command");
@@ -45,6 +47,7 @@ int main(int argc, char **argv)
         if (add_command) { commands_callbacks->addPkgCommand(dependname); }
         if (start_command) { commands_callbacks->startCommand(); }
         if (install_command) { commands_callbacks->installDeps(); }
+        if (update_command) { commands_callbacks->fetchcommand(); }
         std::cout << std::endl;
     }
     catch (args::Help)

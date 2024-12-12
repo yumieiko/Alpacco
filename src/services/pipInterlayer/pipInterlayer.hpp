@@ -4,4 +4,5 @@
 class PipInterlayer {
 public:
     void installDependencies(std::vector<std::string> depenedencies);
+    void updateDependencies();
 };

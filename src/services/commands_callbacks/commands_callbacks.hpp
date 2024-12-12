@@ -6,4 +6,5 @@ public:
     void addPkgCommand(args::Positional<std::string> dependname);
     void startCommand();
     void installDeps();
+    void fetchcommand();
 };

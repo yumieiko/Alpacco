@@ -62,3 +62,9 @@ void CommandCallbacks::installDeps() {
     configParser *cfg;
     pipil->installDependencies(cfg->getDepends("alpacco.config.json"));
 }
+
+void CommandCallbacks::fetchcommand() {
+    spdlog::debug("Fetch install deps called");
+    PipInterlayer *pipil;
+    pipil->updateDependencies();
+}
